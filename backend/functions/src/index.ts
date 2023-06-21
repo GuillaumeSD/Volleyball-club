@@ -1,14 +1,30 @@
-import { onRequest } from "firebase-functions/v2/https";
+import * as functions from "firebase-functions/v2";
 import { handleGetCalendarData } from "./controller/competition";
 
-export const getCalendarData = onRequest(
-  { cors: true, region: "europe-west9" },
-  async (request, response) => {
-    const clubId = request.query.clubId;
-    console.log("clubId", clubId);
+functions.setGlobalOptions({
+  memory: "512MiB",
+  maxInstances: 2,
+  timeoutSeconds: 60,
+  region: "europe-west9",
+});
 
-    await handleGetCalendarData(clubId as string);
+// export const refreshCompetitionData = functions.https.onRequest(
+//   { cors: true },
+//   async (_, response) => {
+//     const clubId = "0924130";
 
-    response.send("Hello from Firebase!");
+//     await handleGetCalendarData(clubId);
+
+//     response.send("Success!");
+//   }
+// );
+
+export const scheduleRefreshCompetitionData = functions.scheduler.onSchedule(
+  // every 2 hours
+  "0 */2 * * *",
+  async () => {
+    const clubId = "0924130";
+
+    await handleGetCalendarData(clubId);
   }
 );
