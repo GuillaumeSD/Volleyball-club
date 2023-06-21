@@ -66,8 +66,7 @@ const ServerDay = (
   const { highlightedDays = [], day, outsideCurrentMonth, ...other } = props;
 
   const isSelected =
-    !props.outsideCurrentMonth &&
-    highlightedDays.indexOf(props.day.date()) >= 0;
+    !props.outsideCurrentMonth && highlightedDays.includes(props.day.date());
 
   return (
     <Badge
