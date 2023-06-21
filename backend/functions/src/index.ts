@@ -5,7 +5,7 @@ functions.setGlobalOptions({
   memory: "512MiB",
   maxInstances: 2,
   timeoutSeconds: 60,
-  region: "europe-west9",
+  region: "europe-west1",
 });
 
 // export const refreshCompetitionData = functions.https.onRequest(

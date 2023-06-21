@@ -9,6 +9,13 @@ import {
   bulkSetFirestore,
   firestoreDB,
 } from "../utils/firestore";
+import { Timestamp } from "firebase-admin/firestore";
+import * as dayjs from "dayjs";
+import "dayjs/locale/fr";
+import * as customParseFormat from "dayjs/plugin/customParseFormat";
+
+dayjs.locale("fr");
+dayjs.extend(customParseFormat);
 
 export const handleGetCalendarData = async (clubId: string): Promise<void> => {
   const config: AxiosRequestConfig = {
@@ -129,28 +136,39 @@ const getMatchData = (tr: { childNodes: CustomNode[] }): Match | null => {
     throw new Error("No match ffvbId found");
   }
 
-  const matchDate = tds.at(1)?.childNodes?.[0]?.value;
-  const matchTime = tds.at(2)?.childNodes?.[0]?.value;
+  const date = tds.at(1)?.childNodes?.[0]?.value;
+  const time = tds.at(2)?.childNodes?.[0]?.value;
+
+  let timestamp: Timestamp | undefined = undefined;
+
+  if (date) {
+    const dateMillis = dayjs(
+      `${date} ${time ?? ""}`,
+      ["DD/MM/YY HH:mm", "DD/MM/YY "],
+      true
+    ).valueOf();
+
+    timestamp = Timestamp.fromMillis(dateMillis);
+  }
 
   const setsPoint = tds.at(8)?.childNodes?.[0]?.value?.split(", ");
 
-  const matchReferee = tds.at(10)?.childNodes?.[0]?.value;
+  const referee = tds.at(10)?.childNodes?.[0]?.value;
 
-  const matchFileForm = tr.childNodes.at(11);
-  const matchFileEndpoint = matchFileForm?.attrs?.at(2)?.value;
-  const matchFileUrl = `https://www.ffvbbeach.org/ffvbapp${matchFileEndpoint?.slice(
-    2
-  )}`;
+  const fileForm = tr.childNodes.at(11);
+  const fileEndpoint = fileForm?.attrs?.at(2)?.value;
+  const fileUrl = `https://www.ffvbbeach.org/ffvbapp${fileEndpoint?.slice(2)}`;
 
   const matchData: Match = {
     ffvbId,
     homeTeam,
     awayTeam,
-    matchDate,
-    matchTime,
+    timestamp,
+    date,
+    time,
     setsPoint,
-    matchReferee,
-    matchFileUrl,
+    referee,
+    fileUrl,
   };
 
   return matchData;
@@ -169,7 +187,7 @@ const formatCompetitionToFirestore = (
   const documents = matches.map((match) => {
     const { ffvbId: matchId } = match;
     return {
-      firestorePath: `competitions/${competitionId}/matches/${matchId}`,
+      firestorePath: `competitions/${competitionId}/games/${matchId}`,
       data: match as unknown as Record<string, unknown>,
     };
   });
@@ -185,14 +203,14 @@ const formatCompetitionToFirestore = (
 const deleteOutdatedMatches = async (competitions: Competition[]) => {
   const competitionsIds = competitions.map(getCompetitionId);
   const getAllCollectionMatches = await firestoreDB
-    .collectionGroup("matches")
+    .collectionGroup("games")
     .get();
 
   const documentsToDelete = getAllCollectionMatches.docs.filter((doc) => {
     doc.updateTime.toMillis() < Date.now() - 1000 * 60 * 5 &&
       competitionsIds.includes(doc.ref.parent.parent?.id ?? "");
   });
-  console.log(`Deleting ${documentsToDelete.length} outdated matches`);
+  console.log(`Deleting ${documentsToDelete.length} outdated games`);
 
   await bulkDeleteFirestore(documentsToDelete.map((doc) => doc.ref.path));
 };

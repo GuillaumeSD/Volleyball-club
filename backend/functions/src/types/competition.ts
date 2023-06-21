@@ -1,3 +1,5 @@
+import { Timestamp } from "firebase-admin/firestore";
+
 export interface Competition {
   ffvbId: string;
   season: string;
@@ -10,9 +12,10 @@ export interface Match {
   ffvbId: string;
   homeTeam: string;
   awayTeam: string;
-  matchDate?: string;
-  matchTime?: string;
+  timestamp?: Timestamp;
+  date?: string;
+  time?: string;
   setsPoint?: string[];
-  matchReferee?: string;
-  matchFileUrl?: string;
+  referee?: string;
+  fileUrl?: string;
 }

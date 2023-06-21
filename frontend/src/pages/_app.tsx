@@ -4,7 +4,11 @@ import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 import { AppProps } from "next/app";
 import Head from "next/head";
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import "dayjs/locale/fr";
 import Layout from "../components/layout";
+import { FirestoreProvider } from "@/contexts/firestore";
 
 export default function MyApp({ Component, pageProps }: AppProps) {
   return (
@@ -12,9 +16,13 @@ export default function MyApp({ Component, pageProps }: AppProps) {
       <Head>
         <title>RAC Volley - Tools</title>
       </Head>
-      <Layout>
-        <Component {...pageProps} />
-      </Layout>
+      <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="fr">
+        <FirestoreProvider>
+          <Layout>
+            <Component {...pageProps} />
+          </Layout>
+        </FirestoreProvider>
+      </LocalizationProvider>
     </>
   );
 }
