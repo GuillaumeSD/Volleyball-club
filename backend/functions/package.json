@@ -4,9 +4,8 @@
     "lint": "eslint --ext .js,.ts src/ && tsc --noEmit",
     "build": "tsc",
     "build:watch": "tsc --watch",
-    "dev": "npm run build && firebase emulators:start --only functions,firestore",
-    "shell": "npm run build && firebase functions:shell",
-    "start": "npm run shell",
+    "dev": "firebase emulators:start --only functions,firestore --project=rac-volley",
+    "shell": "firebase functions:shell",
     "deploy": "firebase deploy --only functions,firestore --project=rac-volley",
     "logs": "firebase functions:log"
   },

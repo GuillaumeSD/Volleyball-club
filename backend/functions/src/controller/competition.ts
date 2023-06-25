@@ -2,7 +2,7 @@ import axios, { AxiosRequestConfig } from "axios";
 import { parse } from "parse5";
 import { logError } from "../utils/logging";
 import { Competition, Match } from "../types/competition";
-import { isNotNull } from "../utils/helpers";
+import { capitalizeWords, isNotNull } from "../utils/helpers";
 import { CustomDom, CustomNode } from "../types/parser";
 import {
   bulkDeleteFirestore,
@@ -104,8 +104,9 @@ const getCompetitionMetadata = (
     const tr = tbody.childNodes[1];
     const td = tr.childNodes[0];
     const name = td.childNodes[0].value;
+    const formattedName = name.replace(`${pool} -`, "").trim();
 
-    return { ffvbId, name, pool, season, url };
+    return { ffvbId, name: formattedName, pool, season, url };
   } catch (error) {
     logError(error);
     return null;
@@ -131,6 +132,9 @@ const getMatchData = (tr: { childNodes: CustomNode[] }): Match | null => {
     return null;
   }
 
+  const formattedHomeTeam = capitalizeWords(homeTeam);
+  const formattedAwayTeam = capitalizeWords(awayTeam);
+
   const ffvbId = tds.at(0)?.childNodes?.[0]?.value;
   if (!ffvbId) {
     throw new Error("No match ffvbId found");
@@ -154,6 +158,9 @@ const getMatchData = (tr: { childNodes: CustomNode[] }): Match | null => {
   const setsPoint = tds.at(8)?.childNodes?.[0]?.value?.split(", ");
 
   const referee = tds.at(10)?.childNodes?.[0]?.value;
+  const formattedReferee = referee
+    ? capitalizeWords(referee.replaceAll("/", " / "))
+    : undefined;
 
   const fileForm = tr.childNodes.at(11);
   const fileEndpoint = fileForm?.attrs?.at(2)?.value;
@@ -161,13 +168,13 @@ const getMatchData = (tr: { childNodes: CustomNode[] }): Match | null => {
 
   const matchData: Match = {
     ffvbId,
-    homeTeam,
-    awayTeam,
+    homeTeam: formattedHomeTeam,
+    awayTeam: formattedAwayTeam,
     timestamp,
     date,
     time,
     setsPoint,
-    referee,
+    referee: formattedReferee,
     fileUrl,
   };
 

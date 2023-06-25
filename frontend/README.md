@@ -37,6 +37,5 @@ npm run lint
 To deploy the app, you first need to install the firebase CLI, then run :
 
 ```bash
-npm run build
 npm run deploy
 ```
