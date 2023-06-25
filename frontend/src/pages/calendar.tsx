@@ -26,8 +26,6 @@ export default function HomePage() {
   const [highlightedDays, setHighlightedDays] = useState<number[]>([]);
   const [todayEvents, setTodayEvents] = useState<GameEvent[]>([]);
 
-  console.log(gameEvents);
-
   const handleMonthChange = (date: Dayjs) => {
     setIsLoading(true);
     const monthEvents = gameEvents?.filter(
@@ -60,7 +58,6 @@ export default function HomePage() {
       justifyContent="center"
       alignItems="center"
       marginTop={1}
-      xs={12}
     >
       <Grid item xs={12}>
         <DateCalendar
@@ -84,7 +81,9 @@ export default function HomePage() {
         <Card variant="outlined">
           <CardContent>
             <Typography variant="h6" gutterBottom>
-              {capitalizeFirstLetter(selectedDate.format("dddd D MMMM YYYY"))}
+              {capitalizeFirstLetter(
+                dayFormatter.format(selectedDate.toDate())
+              )}
             </Typography>
             <Divider sx={{ marginBottom: "1.5em" }} />
             {todayEvents.length ? (
@@ -106,6 +105,8 @@ export default function HomePage() {
   );
 }
 
+const dayFormatter = new Intl.DateTimeFormat("fr", { dateStyle: "full" });
+
 const ServerDay = (
   props: PickersDayProps<Dayjs> & { highlightedDays?: number[] }
 ) => {
@@ -118,7 +119,7 @@ const ServerDay = (
     <Badge
       key={props.day.toString()}
       overlap="circular"
-      badgeContent={showBadge ? "🔵" : undefined}
+      badgeContent={showBadge ? "🟢" : undefined}
     >
       <PickersDay
         {...other}

@@ -14,7 +14,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
   return (
     <>
       <Head>
-        <title>RAC Volley - Tools</title>
+        <title>RAC Volley</title>
       </Head>
       <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="fr">
         <FirestoreProvider>
