@@ -21,7 +21,8 @@ export const useFirestoreCollection = <T>(
     });
 
     return () => unsubscribe();
-  }, [collection]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return documents;
 };
