@@ -2,10 +2,6 @@ import { GameEvent } from "@/types/calendar";
 import { Icon } from "@iconify/react";
 import { Typography, Grid, Link, Stack } from "@mui/material";
 import { yellow } from "@mui/material/colors";
-import utc from "dayjs/plugin/utc";
-import dayjs from "dayjs";
-
-dayjs.extend(utc);
 
 export interface Props {
   game: GameEvent;
@@ -28,9 +24,9 @@ export default function GameSchedule({ game }: Props) {
       </Grid>
       <Grid item xs={12}>
         <Typography variant="body2" fontStyle="italic">
-          {game.dayjs?.utc().hour() === 0
+          {game.dayjs?.hour() === 0
             ? "Horaire inconnu"
-            : game.dayjs?.format("HH:mm")}
+            : game.dayjs?.format("HH[h]mm")}
         </Typography>
       </Grid>
       <Grid item container xs={12}>

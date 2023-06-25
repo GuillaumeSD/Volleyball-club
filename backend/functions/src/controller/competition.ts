@@ -12,9 +12,13 @@ import {
 import { Timestamp } from "firebase-admin/firestore";
 import * as dayjs from "dayjs";
 import "dayjs/locale/fr";
+import * as utc from "dayjs/plugin/utc";
+import * as timezone from "dayjs/plugin/timezone";
 import * as customParseFormat from "dayjs/plugin/customParseFormat";
 
 dayjs.locale("fr");
+dayjs.extend(utc);
+dayjs.extend(timezone);
 dayjs.extend(customParseFormat);
 
 export const handleGetCalendarData = async (clubId: string): Promise<void> => {
@@ -145,12 +149,14 @@ const getMatchData = (tr: { childNodes: CustomNode[] }): Match | null => {
 
   let timestamp: Timestamp | undefined = undefined;
 
-  if (date) {
-    const dateMillis = dayjs(
-      `${date} ${time ?? ""}`,
-      ["DD/MM/YY HH:mm", "DD/MM/YY "],
-      true
-    ).valueOf();
+  if (date && time) {
+    const dateMillis = dayjs
+      .tz(`${date} ${time ?? ""}`, "DD/MM/YY HH:mm", "Europe/Paris")
+      .valueOf();
+
+    timestamp = Timestamp.fromMillis(dateMillis);
+  } else if (date) {
+    const dateMillis = dayjs.tz(date, "DD/MM/YY", "Europe/Paris").valueOf();
 
     timestamp = Timestamp.fromMillis(dateMillis);
   }
