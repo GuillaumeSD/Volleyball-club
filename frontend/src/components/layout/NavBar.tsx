@@ -47,7 +47,7 @@ export default function NavBar({ darkMode, switchDarkMode }: Props) {
           <IconButton
             color="inherit"
             onClick={() =>
-              window.open("https://github.com/GuillaumeSD/rac-volley")
+              window.open("https://github.com/GuillaumeSD/RAC-Volley")
             }
           >
             <Icon icon="mdi:github" />

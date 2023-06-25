@@ -2,12 +2,12 @@ import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDhFCRRN-SSPGJcRa0yLArxEgchfrez0v4",
-  authDomain: "rac-volley.firebaseapp.com",
-  projectId: "rac-volley",
-  storageBucket: "rac-volley.appspot.com",
-  messagingSenderId: "592846376313",
-  appId: "1:592846376313:web:1ced94a870b76706e5f3a8",
+  apiKey: process.env.FIREBASE_API_KEY,
+  authDomain: process.env.FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.FIREBASE_PROJECT_ID,
+  storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.FIREBASE_APP_ID,
 };
 
 const app = initializeApp(firebaseConfig);
