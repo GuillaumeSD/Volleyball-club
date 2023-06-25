@@ -12,7 +12,7 @@ import {
 import NavLink from "../NavLink";
 
 const MenuOptions = [
-  { text: "Home", icon: "mdi:volleyball", href: "/" },
+  { text: "Accueil", icon: "mdi:volleyball", href: "/" },
   { text: "Calendrier", icon: "mdi:calendar", href: "/calendar" },
 ];
 
