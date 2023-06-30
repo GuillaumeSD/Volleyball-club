@@ -5,9 +5,10 @@ import { yellow } from "@mui/material/colors";
 
 export interface Props {
   game: GameEvent;
+  isSameCompetition: boolean;
 }
 
-export default function GameSchedule({ game }: Props) {
+export default function GameSchedule({ game, isSameCompetition }: Props) {
   return (
     <Grid
       item
@@ -17,11 +18,13 @@ export default function GameSchedule({ game }: Props) {
       textAlign="center"
       rowSpacing={1}
     >
-      <Grid item xs={12}>
-        <Link href={game.competition?.url} underline="hover" target="_blank">
-          <Typography variant="body1">{game.competition?.name}</Typography>
-        </Link>
-      </Grid>
+      {!isSameCompetition && (
+        <Grid item xs={12}>
+          <Link href={game.competition?.url} underline="hover" target="_blank">
+            <Typography variant="body1">{game.competition?.name}</Typography>
+          </Link>
+        </Grid>
+      )}
       <Grid item xs={12}>
         <Typography variant="body2" fontStyle="italic">
           {game.dayjs?.hour() === 0

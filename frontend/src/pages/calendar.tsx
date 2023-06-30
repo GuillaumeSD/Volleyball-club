@@ -8,23 +8,27 @@ import {
   Divider,
 } from "@mui/material";
 import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import dayjs, { Dayjs } from "dayjs";
 import {
   DayCalendarSkeleton,
   PickersDay,
   PickersDayProps,
 } from "@mui/x-date-pickers";
-import { GameEvent } from "@/types/calendar";
 import { capitalizeFirstLetter } from "@/helpers/string";
 import GameSchedule from "@/components/GameSchedule";
+import { useRouter } from "next/router";
+
+const dayFormatter = new Intl.DateTimeFormat("fr", { dateStyle: "full" });
 
 export default function HomePage() {
   const { gameEvents } = useFirestore();
   const [isLoading, setIsLoading] = useState(false);
-  const [selectedDate, setSelectedDate] = useState(dayjs());
   const [highlightedDays, setHighlightedDays] = useState<number[]>([]);
-  const [todayEvents, setTodayEvents] = useState<GameEvent[]>([]);
+
+  const router = useRouter();
+  const { date: queryDate } = router.query as { date?: string };
+  const selectedDate = useMemo(() => dayjs(queryDate), [queryDate]);
 
   const handleMonthChange = (date: Dayjs) => {
     setIsLoading(true);
@@ -41,14 +45,42 @@ export default function HomePage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [gameEvents]);
 
-  useEffect(() => {
-    const todayEvents = gameEvents
-      ?.filter(
-        (event): event is { dayjs: Dayjs } =>
-          event.dayjs?.isSame(selectedDate, "day") === true
-      )
-      .sort((a, b) => (a.dayjs.isAfter(b.dayjs) ? 1 : -1));
-    setTodayEvents(todayEvents ?? []);
+  const todayGames = useMemo(() => {
+    const todayGames = gameEvents?.filter(
+      (event): event is typeof event & { dayjs: Dayjs } =>
+        event.dayjs?.isSame(selectedDate, "day") === true
+    );
+
+    if (!todayGames) return [];
+
+    return todayGames.sort((a, b) => {
+      const [aTime, bTime] = [a.dayjs, b.dayjs].map((time) => {
+        if (time.hour() === 0) {
+          const sameCompetitionGame = todayGames.find(
+            (game) =>
+              game.competition?.name === a.competition?.name &&
+              game.dayjs?.hour() !== 0
+          );
+          if (sameCompetitionGame) {
+            return sameCompetitionGame.dayjs.add(1, "minute");
+          }
+        }
+        return time;
+      });
+
+      const timeDiff = aTime.diff(bTime, "minute");
+
+      if (timeDiff > 10) return 1;
+      if (timeDiff < -10) return -1;
+
+      if (!a.competition?.name || !b.competition?.name) return 0;
+
+      if (a.competition.name === b.competition.name) {
+        return aTime.isAfter(bTime) ? 1 : -1;
+      }
+
+      return a.competition.name > b.competition.name ? 1 : -1;
+    });
   }, [gameEvents, selectedDate]);
 
   return (
@@ -63,7 +95,9 @@ export default function HomePage() {
         <DateCalendar
           showDaysOutsideCurrentMonth
           value={selectedDate}
-          onChange={(newVal) => setSelectedDate(newVal ?? dayjs())}
+          onChange={(newVal) =>
+            router.replace(`?date=${(newVal ?? dayjs()).format("YYYY-MM-DD")}`)
+          }
           loading={!gameEvents?.length || isLoading}
           onMonthChange={handleMonthChange}
           renderLoading={() => <DayCalendarSkeleton />}
@@ -86,15 +120,33 @@ export default function HomePage() {
               )}
             </Typography>
             <Divider sx={{ marginBottom: "1.5em" }} />
-            {todayEvents.length ? (
-              todayEvents.map((event, idx) => (
-                <>
-                  <GameSchedule key={event.ffvbId} game={event} />
-                  {idx !== todayEvents.length - 1 && (
-                    <Divider sx={{ marginY: "1.5em" }} variant="fullWidth" />
-                  )}
-                </>
-              ))
+            {todayGames.length ? (
+              todayGames.map((event, idx) => {
+                const isSameCompetition =
+                  idx !== 0 &&
+                  todayGames[idx - 1]?.competition?.name ===
+                    event.competition?.name;
+                return (
+                  <>
+                    {idx !== 0 && !isSameCompetition && (
+                      <Divider sx={{ marginY: "1.5em" }} variant="fullWidth" />
+                    )}
+                    {isSameCompetition && (
+                      <Divider
+                        sx={{ marginY: "0.5em", paddingX: "20%" }}
+                        variant="fullWidth"
+                      >
+                        &
+                      </Divider>
+                    )}
+                    <GameSchedule
+                      key={event.ffvbId}
+                      game={event}
+                      isSameCompetition={isSameCompetition}
+                    />
+                  </>
+                );
+              })
             ) : (
               <Typography textAlign="center">Aucun match</Typography>
             )}
@@ -104,8 +156,6 @@ export default function HomePage() {
     </Grid>
   );
 }
-
-const dayFormatter = new Intl.DateTimeFormat("fr", { dateStyle: "full" });
 
 const ServerDay = (
   props: PickersDayProps<Dayjs> & { highlightedDays?: number[] }
