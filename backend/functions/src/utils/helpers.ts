@@ -36,4 +36,14 @@ const handleCapitalizeWord = (word: string): string => {
 
 const lowerCaseWords = ["de", "sur"];
 
-const upperCaseWords = ["rac", "lso", "as", "sp", "vb", "fce", "en"];
+const upperCaseWords = [
+  "rac",
+  "lso",
+  "as",
+  "sp",
+  "vb",
+  "fce",
+  "en",
+  "csm",
+  "fvo",
+];
