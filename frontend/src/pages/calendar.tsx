@@ -18,6 +18,7 @@ import {
 import { capitalizeFirstLetter } from "@/helpers/string";
 import GameSchedule from "@/components/GameSchedule";
 import { useRouter } from "next/router";
+import { isGameSameDay, sortGameEvents } from "@/helpers/gameEvents";
 
 const dayFormatter = new Intl.DateTimeFormat("fr", { dateStyle: "full" });
 
@@ -46,41 +47,11 @@ export default function HomePage() {
   }, [gameEvents]);
 
   const todayGames = useMemo(() => {
-    const todayGames = gameEvents?.filter(
-      (event): event is typeof event & { dayjs: Dayjs } =>
-        event.dayjs?.isSame(selectedDate, "day") === true
-    );
+    const todayGames = gameEvents?.filter(isGameSameDay(selectedDate));
 
     if (!todayGames) return [];
 
-    return todayGames.sort((a, b) => {
-      const [aTime, bTime] = [a.dayjs, b.dayjs].map((time) => {
-        if (time.hour() === 0) {
-          const sameCompetitionGame = todayGames.find(
-            (game) =>
-              game.competition?.name === a.competition?.name &&
-              game.dayjs?.hour() !== 0
-          );
-          if (sameCompetitionGame) {
-            return sameCompetitionGame.dayjs.add(1, "minute");
-          }
-        }
-        return time;
-      });
-
-      const timeDiff = aTime.diff(bTime, "minute");
-
-      if (timeDiff > 10) return 1;
-      if (timeDiff < -10) return -1;
-
-      if (!a.competition?.name || !b.competition?.name) return 0;
-
-      if (a.competition.name === b.competition.name) {
-        return aTime.isAfter(bTime) ? 1 : -1;
-      }
-
-      return a.competition.name > b.competition.name ? 1 : -1;
-    });
+    return todayGames.sort(sortGameEvents(todayGames));
   }, [gameEvents, selectedDate]);
 
   return (
