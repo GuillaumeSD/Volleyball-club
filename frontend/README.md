@@ -2,7 +2,7 @@
 
 Frontend is built with [Next.js](https://nextjs.org/docs), [React](https://react.dev/learn/describing-the-ui), [Material UI](https://mui.com/material-ui/getting-started/overview/), and [TypeScript](https://www.typescriptlang.org/docs/handbook/typescript-from-scratch.html).
 
-It is deployed on [Firebase](https://firebase.google.com/docs/hosting), you can see it live [here]().
+It is deployed on [Firebase](https://firebase.google.com/docs/hosting), you can see it live [here](https://rac-volley.web.app).
 
 Project's database is [Firestore](https://firebase.google.com/docs/firestore).
 
