@@ -4,7 +4,7 @@ This project is a web app with tools for the [RAC Volley](https://racvolley.wixs
 
 Frontend is built with [Next.js](https://nextjs.org/docs), [React](https://react.dev/learn/describing-the-ui), [Material UI](https://mui.com/material-ui/getting-started/overview/), and [TypeScript](https://www.typescriptlang.org/docs/handbook/typescript-from-scratch.html).
 
-It is deployed on [Firebase](https://firebase.google.com/docs/hosting), you can see it live [here]().
+It is deployed on [Firebase](https://firebase.google.com/docs/hosting), you can see it live [here](https://rac-volley.web.app).
 
 Backend is built with serverless [TypeScript](https://www.typescriptlang.org/docs/handbook/typescript-from-scratch.html) [Firebase cloud functions](https://firebase.google.com/docs/functions).
 
