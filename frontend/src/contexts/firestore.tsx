@@ -4,13 +4,7 @@ import { GameEvent } from "@/types/calendar";
 import { Competition, Game } from "@/types/firestore";
 import dayjs from "dayjs";
 import { collection, collectionGroup } from "firebase/firestore";
-import {
-  PropsWithChildren,
-  createContext,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
+import { PropsWithChildren, createContext, useContext, useMemo } from "react";
 
 export type FirestoreContextType = {
   gameEvents: GameEvent[];
@@ -29,25 +23,22 @@ export function FirestoreProvider({ children }: PropsWithChildren) {
   const competitions = useFirestoreCollection<Competition>(
     collection(firestoreDB, "competitions")
   );
-  const [gameEvents, setGameEvents] = useState<GameEvent[]>([]);
 
-  useEffect(() => {
-    if (!games && !competitions) return;
-
-    const gameEvents: GameEvent[] = games.map((game) => {
-      const competition = competitions.find(
-        (competition) => competition.docId === game.collectionParentId
-      );
-      const dateMillis = game.timestamp?.toMillis();
-      return {
-        ...game,
-        dayjs: dateMillis ? dayjs(dateMillis) : undefined,
-        competition,
-      };
-    });
-
-    setGameEvents(gameEvents);
-  }, [games, competitions]);
+  const gameEvents: GameEvent[] = useMemo(
+    () =>
+      games.map((game) => {
+        const competition = competitions.find(
+          (competition) => competition.docId === game.collectionParentId
+        );
+        const dateMillis = game.timestamp?.toMillis();
+        return {
+          ...game,
+          dayjs: dateMillis ? dayjs(dateMillis) : undefined,
+          competition,
+        };
+      }),
+    [games, competitions]
+  );
 
   const value: FirestoreContextType = {
     gameEvents,

@@ -9,6 +9,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import "dayjs/locale/fr";
 import Layout from "../components/layout";
 import { FirestoreProvider } from "@/contexts/firestore";
+import { SnackbarProvider } from "notistack";
 
 export default function MyApp({ Component, pageProps }: AppProps) {
   return (
@@ -17,11 +18,13 @@ export default function MyApp({ Component, pageProps }: AppProps) {
         <title>RAC Volley</title>
       </Head>
       <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="fr">
-        <FirestoreProvider>
-          <Layout>
-            <Component {...pageProps} />
-          </Layout>
-        </FirestoreProvider>
+        <SnackbarProvider preventDuplicate>
+          <FirestoreProvider>
+            <Layout>
+              <Component {...pageProps} />
+            </Layout>
+          </FirestoreProvider>
+        </SnackbarProvider>
       </LocalizationProvider>
     </>
   );

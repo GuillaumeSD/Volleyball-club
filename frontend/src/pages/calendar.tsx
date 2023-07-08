@@ -31,6 +31,12 @@ export default function HomePage() {
   const { date: queryDate } = router.query as { date?: string };
   const selectedDate = useMemo(() => dayjs(queryDate), [queryDate]);
 
+  useEffect(() => {
+    if (router.isReady && !queryDate) {
+      router.replace(`?date=${dayjs().format("YYYY-MM-DD")}`);
+    }
+  }, [router, queryDate]);
+
   const handleMonthChange = (date: Dayjs) => {
     setIsLoading(true);
     const monthEvents = gameEvents?.filter(
