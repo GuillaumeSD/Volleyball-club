@@ -64,11 +64,27 @@ const handleGetCompetitionData = async (
   const resData = res.data as string;
   const dom = parse(resData) as CustomDom;
 
-  const html = dom.childNodes[0];
-  const body = html.childNodes[2];
+  const html = dom.childNodes.find((child) => child.nodeName === "html");
+  if (!html) throw new Error("No html found");
 
-  const table = body.childNodes[7];
-  const tbody: { childNodes: CustomNode[] } = table.childNodes[0];
+  const body = html.childNodes.find((child) => child.nodeName === "body");
+  if (!body) throw new Error("No body found");
+
+  const table = body.childNodes.find((child) => {
+    if (child.nodeName !== "table") return false;
+
+    const tbody = child.childNodes.find((child) => child.nodeName === "tbody");
+
+    const trs = tbody?.childNodes.filter(
+      (child) => child.nodeName === "tr" && child.attrs.length > 0
+    );
+
+    return trs?.length && trs.length > 20;
+  });
+  if (!table) throw new Error("No table found");
+
+  const tbody = table.childNodes.find((child) => child.nodeName === "tbody");
+  if (!tbody) throw new Error("No tbody found");
 
   const trs = tbody.childNodes.filter(
     (child) => child.nodeName === "tr" && child.attrs.length > 0
@@ -161,6 +177,9 @@ const getMatchData = (tr: { childNodes: CustomNode[] }): Match | null => {
     timestamp = Timestamp.fromMillis(dateMillis);
   }
 
+  const venue = tds.at(7)?.childNodes?.[0]?.value;
+  console.log("venue", venue);
+
   const setsPoint = tds.at(8)?.childNodes?.[0]?.value?.split(", ");
 
   const referee = tds.at(10)?.childNodes?.[0]?.value;
@@ -170,7 +189,9 @@ const getMatchData = (tr: { childNodes: CustomNode[] }): Match | null => {
 
   const fileForm = tr.childNodes.at(11);
   const fileEndpoint = fileForm?.attrs?.at(2)?.value;
-  const fileUrl = `https://www.ffvbbeach.org/ffvbapp${fileEndpoint?.slice(2)}`;
+  const fileUrl = fileEndpoint
+    ? `https://www.ffvbbeach.org/ffvbapp${fileEndpoint.slice(2)}`
+    : undefined;
 
   const matchData: Match = {
     ffvbId,

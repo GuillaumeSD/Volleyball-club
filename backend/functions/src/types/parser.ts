@@ -1,10 +1,10 @@
-import { Document, Element } from "parse5/dist/tree-adapters/default";
+import { Element, Document } from "parse5/dist/tree-adapters/default";
 
-export type CustomDom = Document & {
+export type CustomDom = Omit<Document, "childNodes"> & {
   childNodes: CustomNode[];
 };
 
-export type CustomNode = Element & {
+export type CustomNode = Omit<Element, "childNodes"> & {
   childNodes: CustomNode[];
   value: string;
 };
