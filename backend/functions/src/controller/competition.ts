@@ -178,7 +178,7 @@ const getMatchData = (tr: { childNodes: CustomNode[] }): Match | null => {
   }
 
   const venue = tds.at(7)?.childNodes?.[0]?.value;
-  console.log("venue", venue);
+  const formattedVenue = venue ? capitalizeWords(venue) : undefined;
 
   const setsPoint = tds.at(8)?.childNodes?.[0]?.value?.split(", ");
 
@@ -200,6 +200,7 @@ const getMatchData = (tr: { childNodes: CustomNode[] }): Match | null => {
     timestamp,
     date,
     time,
+    venue: formattedVenue,
     setsPoint,
     referee: formattedReferee,
     fileUrl,

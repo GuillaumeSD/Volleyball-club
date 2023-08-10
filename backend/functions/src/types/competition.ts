@@ -15,6 +15,7 @@ export interface Match {
   timestamp?: Timestamp;
   date?: string;
   time?: string;
+  venue?: string;
   setsPoint?: string[];
   referee?: string;
   fileUrl?: string;
