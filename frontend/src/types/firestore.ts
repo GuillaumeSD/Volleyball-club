@@ -18,6 +18,7 @@ export interface Game {
   setsPoint?: string[];
   referee?: string;
   fileUrl?: string;
+  venue?: string;
 }
 
 export type WithDocMetaData<T> = T & {

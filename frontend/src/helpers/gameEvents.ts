@@ -1,6 +1,7 @@
 import { GameEvent } from "@/types/calendar";
 import { Competition } from "@/types/firestore";
 import { Dayjs } from "dayjs";
+import { openWindowWithPost } from "./form";
 
 export type GameEventWithTime = GameEvent & { dayjs: Dayjs };
 
@@ -42,3 +43,30 @@ export const isGameSameDay =
   (date: Dayjs) =>
   (game: GameEvent): game is GameEventWithTime =>
     game.dayjs?.isSame(date, "day") === true;
+
+export const isVenueFileAvailable = (
+  game: GameEvent
+): game is GameEvent & {
+  venue: string;
+  ffvbId: string;
+  competition: GameEvent["competition"] & { season: string; ffvbId: string };
+} =>
+  !!game.venue &&
+  !!game.competition?.season &&
+  !!game.ffvbId &&
+  !!game.competition.ffvbId;
+
+export const openVenueFile = (game: GameEvent): void => {
+  if (!isVenueFileAvailable(game)) return;
+
+  const formData = {
+    wss_saison: game.competition?.season,
+    codmatch: game.ffvbId,
+    codent: game.competition?.ffvbId,
+  };
+
+  openWindowWithPost(
+    "https://www.ffvbbeach.org/ffvbapp/adressier/fiche_match_ffvb.php",
+    formData
+  );
+};

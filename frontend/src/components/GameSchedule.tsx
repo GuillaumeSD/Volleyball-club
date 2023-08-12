@@ -1,3 +1,4 @@
+import { isVenueFileAvailable, openVenueFile } from "@/helpers/gameEvents";
 import { GameEvent } from "@/types/calendar";
 import { Icon } from "@iconify/react";
 import { Typography, Grid, Link, Stack } from "@mui/material";
@@ -43,11 +44,28 @@ export default function GameSchedule({ game, isSameCompetition }: Props) {
           <Typography variant="body1">{game.awayTeam}</Typography>
         </Grid>
       </Grid>
+
+      <Grid item xs={12}>
+        <Stack direction="row" spacing={1} justifyContent="center">
+          <Typography variant="body1">
+            Lieu : {game.venue || "Inconnu"}
+          </Typography>
+          {isVenueFileAvailable(game) && (
+            <Icon
+              icon="mdi:file-document-outline"
+              color="#1976d2"
+              onClick={() => openVenueFile(game)}
+            />
+          )}
+        </Stack>
+      </Grid>
+
       <Grid item xs={12}>
         <Typography variant="body1">
-          Arbitre : {game.referee ?? "Inconnu"}
+          Arbitre : {game.referee || "Inconnu"}
         </Typography>
       </Grid>
+
       <Grid item xs={12}>
         <Stack direction="row" spacing={1} justifyContent="center">
           <Typography variant="body1">
