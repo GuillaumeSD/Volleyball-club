@@ -3,6 +3,7 @@ import { GameEvent } from "@/types/calendar";
 import { Icon } from "@iconify/react";
 import { Typography, Grid, Link, Stack } from "@mui/material";
 import { yellow } from "@mui/material/colors";
+import FileIcon from "./FileIcon";
 
 export interface Props {
   game: GameEvent;
@@ -51,11 +52,7 @@ export default function GameSchedule({ game, isSameCompetition }: Props) {
             Lieu : {game.venue || "Inconnu"}
           </Typography>
           {isVenueFileAvailable(game) && (
-            <Icon
-              icon="mdi:file-document-outline"
-              color="#1976d2"
-              onClick={() => openVenueFile(game)}
-            />
+            <FileIcon onClick={() => openVenueFile(game)} />
           )}
         </Stack>
       </Grid>
@@ -74,7 +71,7 @@ export default function GameSchedule({ game, isSameCompetition }: Props) {
           </Typography>
           {game.fileUrl && (
             <Link href={game.fileUrl} underline="hover" target="_blank">
-              <Icon icon="mdi:file-document-outline" />
+              <FileIcon />
             </Link>
           )}
         </Stack>
