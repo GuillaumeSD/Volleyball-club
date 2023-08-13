@@ -47,7 +47,7 @@ export default function GameSchedule({ game, isSameCompetition }: Props) {
       </Grid>
 
       <Grid item xs={12}>
-        <Stack direction="row" spacing={1} justifyContent="center">
+        <Stack direction="row" spacing={0.5} justifyContent="center">
           <Typography variant="body1">
             Lieu : {game.venue || "Inconnu"}
           </Typography>
@@ -64,7 +64,7 @@ export default function GameSchedule({ game, isSameCompetition }: Props) {
       </Grid>
 
       <Grid item xs={12}>
-        <Stack direction="row" spacing={1} justifyContent="center">
+        <Stack direction="row" spacing={0.5} justifyContent="center">
           <Typography variant="body1">
             Résultat :{" "}
             {game.setsPoint?.map((set) => set).join(" / ") ?? "Inconnu"}
