@@ -1,7 +1,9 @@
 export const isNotNull = <T>(value: T | null): value is T => value !== null;
 
-export const capitalizeWords = (str: string): string =>
-  str
+export const capitalizeWords = (str: string): string => {
+  const sanitizedStr = str.replaceAll("�", "é");
+
+  return sanitizedStr
     .split(" ")
     .map((word) => {
       if (word.includes("'")) {
@@ -25,6 +27,7 @@ export const capitalizeWords = (str: string): string =>
       return handleCapitalizeWord(word);
     })
     .join(" ");
+};
 
 const handleCapitalizeWord = (word: string): string => {
   const lowerCaseWord = word.toLowerCase();
