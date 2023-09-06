@@ -11,6 +11,8 @@ export interface Props {
 }
 
 export default function GameSchedule({ game, isSameCompetition }: Props) {
+  const isGamePassed = game.dayjs?.isBefore(new Date()) ?? true;
+
   return (
     <Grid
       item
@@ -30,7 +32,7 @@ export default function GameSchedule({ game, isSameCompetition }: Props) {
       <Grid item xs={12}>
         <Typography variant="body2" fontStyle="italic">
           {game.dayjs?.hour() === 0
-            ? "Horaire inconnu"
+            ? "Horaire non défini"
             : game.dayjs?.format("HH[h]mm")}
         </Typography>
       </Grid>
@@ -49,7 +51,7 @@ export default function GameSchedule({ game, isSameCompetition }: Props) {
       <Grid item xs={12}>
         <Stack direction="row" spacing={0.5} justifyContent="center">
           <Typography variant="body1">
-            Lieu : {game.venue || "Inconnu"}
+            Lieu : {game.venue || "Non défini"}
           </Typography>
           {isVenueFileAvailable(game) && (
             <FileIcon onClick={() => openVenueFile(game)} />
@@ -59,7 +61,7 @@ export default function GameSchedule({ game, isSameCompetition }: Props) {
 
       <Grid item xs={12}>
         <Typography variant="body1">
-          Arbitre : {game.referee || "Inconnu"}
+          Arbitre : {game.referee || "Non défini"}
         </Typography>
       </Grid>
 
@@ -67,7 +69,9 @@ export default function GameSchedule({ game, isSameCompetition }: Props) {
         <Stack direction="row" spacing={0.5} justifyContent="center">
           <Typography variant="body1">
             Résultat :{" "}
-            {game.setsPoint?.map((set) => set).join(" / ") ?? "Inconnu"}
+            {!isGamePassed
+              ? "À venir"
+              : game.setsPoint?.map((set) => set).join(" / ") ?? "Non défini"}
           </Typography>
           {game.fileUrl && (
             <Link href={game.fileUrl} underline="hover" target="_blank">
