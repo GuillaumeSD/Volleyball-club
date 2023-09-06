@@ -11,8 +11,6 @@ export interface Props {
 }
 
 export default function GameSchedule({ game, isSameCompetition }: Props) {
-  const isGamePassed = game.dayjs?.isBefore(new Date()) ?? true;
-
   return (
     <Grid
       item
@@ -69,9 +67,7 @@ export default function GameSchedule({ game, isSameCompetition }: Props) {
         <Stack direction="row" spacing={0.5} justifyContent="center">
           <Typography variant="body1">
             Résultat :{" "}
-            {!isGamePassed
-              ? "À venir"
-              : game.setsPoint?.map((set) => set).join(" / ") ?? "Non défini"}
+            {game.setsPoint?.map((set) => set).join(" / ") ?? "À venir"}
           </Typography>
           {game.fileUrl && (
             <Link href={game.fileUrl} underline="hover" target="_blank">
