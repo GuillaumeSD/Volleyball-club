@@ -1,6 +1,4 @@
-export const isNotNull = <T>(value: T | null): value is T => value !== null;
-
-export const capitalizeWords = (str: string): string => {
+export const formatWords = (str: string): string => {
   const sanitizedStr = str.replaceAll("�", "é");
 
   return sanitizedStr
@@ -9,14 +7,14 @@ export const capitalizeWords = (str: string): string => {
       if (word.includes("'")) {
         return word
           .split("'")
-          .map((w) => handleCapitalizeWord(w))
+          .map((w) => capitalizeWord(w))
           .join("'");
       }
 
       if (word.includes("-")) {
         return word
           .split("-")
-          .map((w) => handleCapitalizeWord(w))
+          .map((w) => capitalizeWord(w))
           .join("-");
       }
 
@@ -24,12 +22,12 @@ export const capitalizeWords = (str: string): string => {
         return word.toUpperCase();
       }
 
-      return handleCapitalizeWord(word);
+      return capitalizeWord(word);
     })
     .join(" ");
 };
 
-const handleCapitalizeWord = (word: string): string => {
+const capitalizeWord = (word: string): string => {
   const lowerCaseWord = word.toLowerCase();
   if (lowerCaseWords.includes(lowerCaseWord)) return lowerCaseWord;
   if (upperCaseWords.includes(lowerCaseWord))

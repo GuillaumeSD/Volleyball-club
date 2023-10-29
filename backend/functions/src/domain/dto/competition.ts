@@ -1,14 +1,14 @@
 import { Timestamp } from "firebase-admin/firestore";
 
-export interface Competition {
+export type CompetitionMetadataDto = {
   ffvbId: string;
   season: string;
   pool: string;
   name: string;
   url: string;
-}
+};
 
-export interface Match {
+export type GameDto = {
   ffvbId: string;
   homeTeam: string;
   awayTeam: string;
@@ -19,4 +19,9 @@ export interface Match {
   setsPoint?: string[];
   referee?: string;
   fileUrl?: string;
-}
+};
+
+export type CompetitionDto = {
+  metadata: CompetitionMetadataDto;
+  games: GameDto[];
+};

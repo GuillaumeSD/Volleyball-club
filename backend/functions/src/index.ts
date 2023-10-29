@@ -1,5 +1,5 @@
 import * as functions from "firebase-functions/v2";
-import { handleGetCalendarData } from "./controller/competition";
+import { refreshCompetitionsData } from "./infrastructure/handlers/competition";
 
 functions.setGlobalOptions({
   memory: "512MiB",
@@ -7,6 +7,8 @@ functions.setGlobalOptions({
   timeoutSeconds: 60,
   region: "europe-west1",
 });
+
+const clubId = "0924130";
 
 // export const refreshCompetitionData = functions.https.onRequest(
 //   { cors: true },
@@ -23,8 +25,6 @@ export const scheduleRefreshCompetitionData = functions.scheduler.onSchedule(
   // every 2 hours
   "0 */2 * * *",
   async () => {
-    const clubId = "0924130";
-
-    await handleGetCalendarData(clubId);
+    await refreshCompetitionsData(clubId);
   }
 );
