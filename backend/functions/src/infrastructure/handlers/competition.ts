@@ -18,7 +18,6 @@ dayjs.extend(customParseFormat);
 export const refreshCompetitionsData = async (
   clubId: string
 ): Promise<void> => {
-  console.log("hello");
   const competitionsUrl = await getClubCompetitionsUrls(clubId);
 
   const competitions = await Promise.all(
