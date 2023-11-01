@@ -3,7 +3,7 @@ import { CustomNode } from "../infrastructure/types/parser";
 import { GameDto } from "./dto/competition";
 import { formatWords } from "./utils/formatWords";
 import { Timestamp } from "firebase-admin/firestore";
-import { includeOnlyNumbers, isValidName } from "./utils/helpers";
+import { IsValidSet, isValidName } from "./utils/helpers";
 
 export const getGameData = (tr: {
   childNodes: CustomNode[];
@@ -91,11 +91,7 @@ const getVenue = (tds: CustomNode[]): string | undefined => {
 const getSetsPoint = (tds: CustomNode[]): string[] | undefined => {
   const setsPoint = tds.at(8)?.childNodes?.[0]?.value?.split(", ");
 
-  if (
-    setsPoint &&
-    setsPoint.length > 1 &&
-    setsPoint.every(includeOnlyNumbers)
-  ) {
+  if (setsPoint && setsPoint.length > 1 && setsPoint.every(IsValidSet)) {
     return setsPoint;
   }
 
