@@ -5,7 +5,10 @@ export const getClubCompetitionsUrls = async (
 ): Promise<string[]> => {
   const config: AxiosRequestConfig = {
     method: "GET",
-    url: `https://www.ffvbbeach.org/ffvbapp/resu/planning_club_class.php?cnclub=${clubId}`,
+    url: "https://www.ffvbbeach.org/ffvbapp/resu/planning_club_class.php",
+    params: {
+      cnclub: clubId,
+    },
   };
   const res = await axios(config);
   const resData = res.data as string;
