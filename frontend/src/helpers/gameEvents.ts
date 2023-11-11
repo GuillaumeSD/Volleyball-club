@@ -10,13 +10,20 @@ export const sortGameEvents =
   (gameA: GameEventWithTime, gameB: GameEventWithTime): number => {
     const [aTime, bTime] = [gameA, gameB].map((game) => {
       if (game.dayjs.hour() === 0) {
-        const sameCompetitionGame = games.find(
+        const sameCompetitionGames = games.filter(
           isSameCompetitionGame(game.competition)
         );
-        if (sameCompetitionGame) {
-          return sameCompetitionGame.dayjs.add(1, "minute");
+
+        if (sameCompetitionGames.length > 0) {
+          const sameTeamGame = sameCompetitionGames.find(
+            isSameTeam(game.homeTeam) || isSameTeam(game.awayTeam)
+          );
+
+          if (sameTeamGame) return sameTeamGame.dayjs.add(1, "minute");
+          return sameCompetitionGames[0].dayjs.add(1, "minute");
         }
       }
+
       return game.dayjs;
     });
 
@@ -38,6 +45,11 @@ const isSameCompetitionGame =
   (competition?: Competition) =>
   (game: GameEvent): boolean =>
     game.competition?.name === competition?.name && game.dayjs?.hour() !== 0;
+
+const isSameTeam =
+  (teamName?: string) =>
+  (game: GameEvent): boolean =>
+    game.homeTeam === teamName || game.awayTeam === teamName;
 
 export const isGameSameDay =
   (date: Dayjs) =>
