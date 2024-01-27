@@ -6,6 +6,8 @@ export interface Competition {
   pool?: string;
   name?: string;
   url?: string;
+  calendarId?: string;
+  active?: boolean;
 }
 
 export interface Game {

@@ -8,6 +8,7 @@ import { PropsWithChildren, createContext, useContext, useMemo } from "react";
 
 export type FirestoreContextType = {
   gameEvents: GameEvent[];
+  competitions: Competition[];
 };
 
 const FirestoreContext = createContext<Partial<FirestoreContextType>>({});
@@ -42,6 +43,7 @@ export function FirestoreProvider({ children }: PropsWithChildren) {
 
   const value: FirestoreContextType = {
     gameEvents,
+    competitions,
   };
 
   return (
