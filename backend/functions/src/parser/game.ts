@@ -1,9 +1,9 @@
 import * as dayjs from "dayjs";
-import { CustomNode } from "../infrastructure/types/parser";
-import { GameDto } from "./dto/competition";
-import { formatWords } from "./utils/formatWords";
+import { CustomNode } from "../types/parser";
+import { GameDto } from "../dto/competition";
+import { formatWords } from "../utils/formatWords";
 import { Timestamp } from "firebase-admin/firestore";
-import { IsValidSet, isValidName } from "./utils/helpers";
+import { IsValidSet, isValidName } from "../utils/helpers";
 
 export const getGameData = (tr: {
   childNodes: CustomNode[];

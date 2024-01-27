@@ -1,9 +1,8 @@
-import { getCompetitionId } from "../../domain/competition";
 import {
   CompetitionDto,
   CompetitionMetadataDto,
   GameDto,
-} from "../../domain/dto/competition";
+} from "../dto/competition";
 import { DocumentToSet } from "../types/firestore";
 
 export const competitionDtoToFirestore = (
@@ -41,4 +40,11 @@ export const gamesDtoToFirestore = (
   });
 
   return firestoreGames;
+};
+
+export const getCompetitionId = (
+  competition: CompetitionMetadataDto
+): string => {
+  const { ffvbId, pool, season } = competition;
+  return `${ffvbId}_${pool}_${season.replaceAll("/", "_")}`;
 };

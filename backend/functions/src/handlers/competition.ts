@@ -3,12 +3,15 @@ import "dayjs/locale/fr";
 import * as utc from "dayjs/plugin/utc";
 import * as timezone from "dayjs/plugin/timezone";
 import * as customParseFormat from "dayjs/plugin/customParseFormat";
-import { getClubCompetitionsUrls } from "../../domain/club";
-import { getCompetitionData, getCompetitionId } from "../../domain/competition";
-import { isNotNull } from "../../domain/utils/helpers";
-import { competitionDtoToFirestore } from "../adapters/firestore";
-import { bulkSetFirestore } from "../firestore/setDocuments";
-import { deleteOutdatedGames } from "../firestore/deleteDocuments";
+import { getClubCompetitionsUrls } from "../parser/club";
+import { getCompetitionData } from "../parser/competition";
+import { isNotNull } from "../utils/helpers";
+import {
+  competitionDtoToFirestore,
+  getCompetitionId,
+} from "../adapters/firestore";
+import { bulkSetFirestore } from "../firestore/set";
+import { deleteOutdatedGames } from "../firestore/delete";
 
 dayjs.locale("fr");
 dayjs.extend(utc);
@@ -17,7 +20,7 @@ dayjs.extend(customParseFormat);
 
 export const refreshCompetitionsData = async (
   clubId: string
-): Promise<void> => {
+): Promise<string[]> => {
   const competitionsUrl = await getClubCompetitionsUrls(clubId);
 
   const competitions = await Promise.all(
@@ -35,4 +38,6 @@ export const refreshCompetitionsData = async (
   );
 
   await deleteOutdatedGames(competitionsIds);
+
+  return competitionsIds;
 };

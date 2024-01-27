@@ -1,8 +1,8 @@
-import { CompetitionDto, CompetitionMetadataDto } from "./dto/competition";
-import { getParsedDom } from "../infrastructure/parser/dom";
-import { CustomNode } from "../infrastructure/types/parser";
-import { logError } from "../infrastructure/logging";
-import { isNotNull } from "./utils/helpers";
+import { CompetitionDto, CompetitionMetadataDto } from "../dto/competition";
+import { getParsedDom } from "./dom";
+import { CustomNode } from "../types/parser";
+import { logError } from "../logging";
+import { isNotNull } from "../utils/helpers";
 import { getGameData } from "./game";
 
 export const getCompetitionData = async (
@@ -72,16 +72,9 @@ const getCompetitionMetadata = (
     const name = td.childNodes[0].value;
     const formattedName = name.replace(`${pool} -`, "").trim();
 
-    return { ffvbId, name: formattedName, pool, season, url };
+    return { ffvbId, name: formattedName, pool, season, url, active: true };
   } catch (error) {
     logError(error);
     return null;
   }
-};
-
-export const getCompetitionId = (
-  competition: CompetitionMetadataDto
-): string => {
-  const { ffvbId, pool, season } = competition;
-  return `${ffvbId}_${pool}_${season.replaceAll("/", "_")}`;
 };

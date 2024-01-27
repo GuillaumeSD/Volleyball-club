@@ -6,6 +6,8 @@ export type CompetitionMetadataDto = {
   pool: string;
   name: string;
   url: string;
+  calendarId?: string;
+  active?: boolean;
 };
 
 export type GameDto = {
