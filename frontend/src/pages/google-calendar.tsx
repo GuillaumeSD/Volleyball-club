@@ -28,9 +28,9 @@ export default function GoogleCalendar() {
             FFVB
           </a>{" "}
           ont leurs calendriers Google synchronisés automatiquement grâce à ce
-          projet, pour les ajouter sur vos agendas cliquez sur le bouton
-          correspondant ci-dessous. Vous y trouverez tous les matchs du RAC pour
-          chaque compétition avec toutes les informations correspondantes :
+          projet, pour les ajouter sur votre agenda cliquez sur les boutons
+          correspondants ci-dessous. Vous y trouverez tous les matchs du RAC
+          pour chaque compétition avec toutes les informations correspondantes :
           lieu, adversaires, date et heure, arbitre, résultat, etc... Si vous
           rencontrez des problèmes, n'hésitez pas à{" "}
           <a
@@ -80,7 +80,7 @@ export default function GoogleCalendar() {
                 target="_blank"
                 style={{ textTransform: "none" }}
               >
-                Ouvrir le calendrier
+                Ajouter le calendrier
               </Button>
             </Grid>
           </Grid>
