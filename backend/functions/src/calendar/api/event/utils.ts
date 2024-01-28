@@ -14,6 +14,7 @@ export const gameToEventParams = (
 
   return {
     id: getEventIdFromGame(game),
+    status: "confirmed",
     summary: `${game.homeTeam} vs ${game.awayTeam}`,
     description:
       `<strong>Arbitre :</strong> ${game.referee ?? "Inconnu"}<br/>` +
@@ -95,6 +96,7 @@ export const isEventAlreadyUpdated = (
     eventParams?.summary === event.summary &&
     eventParams?.description === event.description &&
     eventParams?.location === event.location &&
+    eventParams?.status === event.status &&
     (areDatesEqual || isSpecialNoTimeGame) &&
     areAttachmentsEqual &&
     areRemindersEqual

@@ -17,6 +17,7 @@ export const listCalendarEvents = async (
       .list({
         calendarId,
         pageToken: nextPageToken,
+        showDeleted: true,
       })
       .catch(
         logCatchedError({
