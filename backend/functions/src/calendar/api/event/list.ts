@@ -1,3 +1,4 @@
+import { logCatchedError } from "../../../logging";
 import {
   CalendarEvent,
   CalendarEventListResponse,
@@ -12,11 +13,18 @@ export const listCalendarEvents = async (
   const events: CalendarEvent[] = [];
 
   do {
-    const res: CalendarEventListResponse = await calendarApi.events.list({
-      calendarId,
-      maxResults: 1000,
-      pageToken: nextPageToken,
-    });
+    const res: CalendarEventListResponse = await calendarApi.events
+      .list({
+        calendarId,
+        pageToken: nextPageToken,
+      })
+      .catch(
+        logCatchedError({
+          calendarId,
+          nextPageToken,
+          action: "list calendar events",
+        })
+      );
 
     events.push(...(res.data.items?.filter(isCalendarEvent) ?? []));
 

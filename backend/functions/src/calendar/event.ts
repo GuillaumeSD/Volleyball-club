@@ -57,11 +57,9 @@ export const handleUpdateEvent =
 
     const event = calendarEvents.find((event) => event.id === eventId);
 
-    if (isEventAlreadyUpdated(event, game, eventParams)) {
-      console.log(`Event ${eventId} already updated`);
-      return;
-    }
+    if (isEventAlreadyUpdated(event, game, eventParams)) return;
 
+    console.log(`Updating event ${eventId}`);
     await updateCalendarEvent(eventId, calendarId, eventParams);
   };
 
