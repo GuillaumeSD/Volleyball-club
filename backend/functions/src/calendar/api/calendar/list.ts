@@ -1,9 +1,21 @@
-import { Calendar } from "../../../types/calendar";
+import { Calendar, CalendarListResponse } from "../../../types/calendar";
 import { isCalendar } from "../../../utils/types";
 import { calendarApi } from "../index";
 
 export const listCalendars = async (): Promise<Calendar[]> => {
-  const res = await calendarApi.calendarList.list({ maxResults: 250 });
+  const calendars: Calendar[] = [];
+  let nextPageToken = undefined;
 
-  return res.data.items?.filter(isCalendar) ?? [];
+  do {
+    const res: CalendarListResponse = await calendarApi.calendarList.list({
+      maxResults: 250,
+      pageToken: nextPageToken,
+    });
+
+    calendars.push(...(res.data.items?.filter(isCalendar) ?? []));
+
+    nextPageToken = res.data.nextPageToken;
+  } while (nextPageToken);
+
+  return calendars;
 };

@@ -7,3 +7,11 @@ export type CalendarEvent = WithRequired<calendar_v3.Schema$Event, "id">;
 
 export type CalendarEventParams =
   calendar_v3.Params$Resource$Events$Insert["requestBody"];
+
+export type CalendarEventListResponse = {
+  data: calendar_v3.Schema$Events;
+};
+
+export type CalendarListResponse = {
+  data: calendar_v3.Schema$CalendarList;
+};

@@ -1,14 +1,27 @@
-import { CalendarEvent } from "../../../types/calendar";
+import {
+  CalendarEvent,
+  CalendarEventListResponse,
+} from "../../../types/calendar";
 import { isCalendarEvent } from "../../../utils/types";
 import { calendarApi } from "../index";
 
 export const listCalendarEvents = async (
   calendarId: string
 ): Promise<CalendarEvent[]> => {
-  const res = await calendarApi.events.list({
-    calendarId,
-    maxResults: 1000,
-  });
+  let nextPageToken = undefined;
+  const events: CalendarEvent[] = [];
 
-  return res.data.items?.filter(isCalendarEvent) ?? [];
+  do {
+    const res: CalendarEventListResponse = await calendarApi.events.list({
+      calendarId,
+      maxResults: 1000,
+      pageToken: nextPageToken,
+    });
+
+    events.push(...(res.data.items?.filter(isCalendarEvent) ?? []));
+
+    nextPageToken = res.data.nextPageToken;
+  } while (nextPageToken);
+
+  return events;
 };
