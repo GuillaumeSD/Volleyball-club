@@ -13,11 +13,12 @@ export const getClubCompetitionsUrls = async (
   const res = await axios(config);
   const resData = res.data as string;
 
-  const competitionsUrl = resData
-    .match(
-      /https:\/\/www\.ffvbbeach\.org\/ffvbapp\/resu\/vbspo_calendrier\.php\?[\s\S]*?'/gm
-    )
-    ?.map((url) => url.slice(0, -1));
+  const competitionsUrl = [
+    /https:\/\/www\.ffvbbeach\.org\/ffvbapp\/resu\/vbspo_calendrier\.php\?[\s\S]*?'/gm,
+    /https:\/\/www\.ffvbbeach\.org\/ffvbapp\/resu\/seniors\/[\s\S]*?\.htm'/gm,
+  ]
+    .flatMap((regex) => resData.match(regex) ?? [])
+    .map((url) => url.slice(0, -1));
 
-  return competitionsUrl ?? [];
+  return competitionsUrl;
 };

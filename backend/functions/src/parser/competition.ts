@@ -6,15 +6,9 @@ import { isNotNull } from "../utils/helpers";
 import { getGameData } from "./game";
 
 export const getCompetitionData = async (
-  url: string
+  rawUrl: string
 ): Promise<CompetitionDto | null> => {
-  const dom = await getParsedDom(url);
-
-  const html = dom.childNodes.find((child) => child.nodeName === "html");
-  if (!html) throw new Error("No html found");
-
-  const body = html.childNodes.find((child) => child.nodeName === "body");
-  if (!body) throw new Error("No body found");
+  const { body, url } = await getBody(rawUrl);
 
   const table = body.childNodes.find((child) => {
     if (child.nodeName !== "table") return false;
@@ -67,9 +61,14 @@ const getCompetitionMetadata = (
 
     const table = body.childNodes[4];
     const tbody = table.childNodes[0];
-    const tr = tbody.childNodes[1];
-    const td = tr.childNodes[0];
-    const name = td.childNodes[0].value;
+    const tr = tbody.childNodes.find(
+      (tr) =>
+        tr.nodeName === "tr" &&
+        tr.childNodes?.[0]?.nodeName === "td" &&
+        tr.childNodes[0].childNodes[0].nodeName === "#text"
+    );
+    if (!tr) throw new Error("Competition name not found");
+    const name = tr.childNodes[0].childNodes[0].value;
     const formattedName = name.replace(`${pool} -`, "").trim();
 
     return { ffvbId, name: formattedName, pool, season, url, active: true };
@@ -77,4 +76,43 @@ const getCompetitionMetadata = (
     logError(error);
     return null;
   }
+};
+
+const getBody = async (
+  rawUrl: string
+): Promise<{ body: CustomNode; url: string }> => {
+  const dom = await getParsedDom(rawUrl);
+
+  const html = dom.childNodes.find((child) => child.nodeName === "html");
+  if (!html) throw new Error("No html found");
+
+  const rootBody = html.childNodes.find((child) => child.nodeName === "body");
+  if (rootBody) return { body: rootBody, url: rawUrl };
+
+  const frameSet = html.childNodes.find(
+    (child) => child.nodeName === "frameset"
+  );
+  if (!frameSet) throw new Error("No body or frameset found");
+
+  const frame = frameSet.childNodes.find(
+    (child) =>
+      child.nodeName === "frame" &&
+      child.attrs.find(
+        (attr) => attr.name === "name" && attr.value === "calendrier"
+      )
+  );
+  if (!frame) throw new Error("No matching frame found");
+
+  const src = frame.attrs.find((attr) => attr.name === "src")?.value;
+  if (!src) throw new Error("No src found");
+
+  const newDom = await getParsedDom(src);
+
+  const newHtml = newDom.childNodes.find((child) => child.nodeName === "html");
+  if (!newHtml) throw new Error("No html found");
+
+  const body = newHtml.childNodes.find((child) => child.nodeName === "body");
+  if (!body) throw new Error("No body found");
+
+  return { body, url: src };
 };
