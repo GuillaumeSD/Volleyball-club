@@ -12,7 +12,6 @@ import {
 import NavLink from "../NavLink";
 
 const MenuOptions = [
-  { text: "Accueil", icon: "mdi:volleyball", href: "/" },
   { text: "Calendrier", icon: "mdi:calendar", href: "/calendar" },
   {
     text: "Calendrier Google",
