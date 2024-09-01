@@ -22,7 +22,7 @@ const createOrUpdateCalendar = async (
   competition: CompetitionMetadataDto,
   calendars: Calendar[]
 ): Promise<Calendar> => {
-  const description = `Ce calendrier contient tous les matchs de la compétition ${competition.name} sur la saison ${competition.season}.\n\nCe calendrier est mis à jour automatiquement.\n\nDéveloppé par Guillaume Saint-Donat pour le RAC Volley.\n\nSource: ${competition.url}`;
+  const description = `Ce calendrier contient tous les matchs de la compétition ${competition.name} sur la saison ${competition.season}.\n\nCe calendrier est mis à jour automatiquement.\n\nDéveloppé par Guillaume Saint-Donat.\n\nSource: ${competition.url}`;
   const title = competition.name;
   const timeZone = "Europe/Paris";
 

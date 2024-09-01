@@ -9,7 +9,7 @@ functions.setGlobalOptions({
   region: "europe-west1",
 });
 
-const clubId = "0924130";
+const clubId = "0783185";
 
 export const scheduleRefreshCompetitionData = functions.scheduler.onSchedule(
   // every 2 hours

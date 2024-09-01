@@ -1,4 +1,4 @@
-# RAC Volley Backend
+# Backend
 
 Backend is built with serverless [TypeScript](https://www.typescriptlang.org/docs/handbook/typescript-from-scratch.html) [Firebase cloud functions](https://firebase.google.com/docs/functions).
 

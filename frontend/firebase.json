@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "site": "rac-volley",
+    "site": "vesinet-vb",
     "public": "out",
     "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
     "cleanUrls": true,

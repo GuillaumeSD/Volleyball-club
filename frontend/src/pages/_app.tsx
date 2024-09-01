@@ -15,7 +15,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
   return (
     <>
       <Head>
-        <title>RAC Volley</title>
+        <title>Calendrier du Vésinet VB club</title>
       </Head>
       <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="fr">
         <SnackbarProvider preventDuplicate>

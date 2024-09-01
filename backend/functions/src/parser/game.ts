@@ -18,8 +18,8 @@ export const getGameData = (tr: {
   }
 
   if (
-    !homeTeam.toLowerCase().includes("rueil") &&
-    !awayTeam.toLowerCase().includes("rueil")
+    !homeTeam.toLowerCase().includes("vesinet") &&
+    !awayTeam.toLowerCase().includes("vesinet")
   ) {
     return null;
   }

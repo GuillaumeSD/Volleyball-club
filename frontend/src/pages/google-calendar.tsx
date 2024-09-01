@@ -21,7 +21,7 @@ export default function GoogleCalendar() {
         <Typography textAlign="justify">
           Toutes les compétitions du club référencées par la{" "}
           <a
-            href="https://www.ffvbbeach.org/ffvbapp/resu/planning_club_class.php?cnclub=0924130"
+            href="https://www.ffvbbeach.org/ffvbapp/resu/planning_club_class.php?cnclub=0783185"
             target="_blank"
             style={{ color: "blue", textDecoration: "none" }}
           >
@@ -29,12 +29,12 @@ export default function GoogleCalendar() {
           </a>{" "}
           ont leurs calendriers Google synchronisés automatiquement grâce à ce
           projet, pour les ajouter sur votre agenda cliquez sur les boutons
-          correspondants ci-dessous. Vous y trouverez tous les matchs du RAC
+          correspondants ci-dessous. Vous y trouverez tous les matchs du Vésinet
           pour chaque compétition avec toutes les informations correspondantes :
           lieu, adversaires, date et heure, arbitre, résultat, etc... Si vous
           rencontrez des problèmes, n'hésitez pas à{" "}
           <a
-            href="https://github.com/GuillaumeSD/RAC-Volley/issues"
+            href="https://github.com/GuillaumeSD/Volleyball-club/issues"
             target="_blank"
             style={{ color: "blue", textDecoration: "none" }}
           >

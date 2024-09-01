@@ -1,4 +1,4 @@
-# RAC Volley Frontend
+# Frontend
 
 Frontend is built with [Next.js](https://nextjs.org/docs), [React](https://react.dev/learn/describing-the-ui), [Material UI](https://mui.com/material-ui/getting-started/overview/), and [TypeScript](https://www.typescriptlang.org/docs/handbook/typescript-from-scratch.html).
 

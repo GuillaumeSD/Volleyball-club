@@ -47,4 +47,8 @@ const upperCaseWords = [
   "en",
   "csm",
   "fvo",
+  "vc",
+  "asp",
+  "ugs",
+  "asptt",
 ];

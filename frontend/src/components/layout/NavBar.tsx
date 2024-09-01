@@ -41,13 +41,13 @@ export default function NavBar({ darkMode, switchDarkMode }: Props) {
           </IconButton>
           <NavLink href="/">
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-              RAC Volley
+              Calendrier du Vésinet VB club
             </Typography>
           </NavLink>
           <IconButton
             color="inherit"
             onClick={() =>
-              window.open("https://github.com/GuillaumeSD/RAC-Volley")
+              window.open("https://github.com/GuillaumeSD/Volleyball-club")
             }
           >
             <Icon icon="mdi:github" />
