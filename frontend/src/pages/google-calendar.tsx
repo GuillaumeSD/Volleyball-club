@@ -10,33 +10,27 @@ export default function GoogleCalendar() {
     ) ?? [];
 
   return (
-    <Grid
-      container
-      spacing={4}
-      justifyContent="center"
-      alignItems="center"
-      marginTop={1}
-    >
+    <Grid container spacing={4} justifyContent="center" alignItems="center">
       <Grid item xs={12}>
-        <Typography textAlign="justify">
+        <Typography textAlign="justify" marginX={1}>
           Toutes les compétitions du club référencées par la{" "}
           <a
             href="https://www.ffvbbeach.org/ffvbapp/resu/planning_club_class.php?cnclub=0783185"
             target="_blank"
-            style={{ color: "blue", textDecoration: "none" }}
+            style={{ color: "#217eff", textDecoration: "none" }}
           >
             FFVB
           </a>{" "}
           ont leurs calendriers Google synchronisés automatiquement grâce à ce
           projet, pour les ajouter sur votre agenda cliquez sur les boutons
           correspondants ci-dessous. Vous y trouverez tous les matchs du Vésinet
-          pour chaque compétition avec toutes les informations correspondantes :
+          pour chaque compétition avec toutes les informations correspondantes:
           lieu, adversaires, date et heure, arbitre, résultat, etc... Si vous
           rencontrez des problèmes, n'hésitez pas à{" "}
           <a
             href="https://github.com/GuillaumeSD/Volleyball-club/issues"
             target="_blank"
-            style={{ color: "blue", textDecoration: "none" }}
+            style={{ color: "#217eff", textDecoration: "none" }}
           >
             ouvrir une issue sur le repo github du projet.
           </a>
@@ -61,7 +55,7 @@ export default function GoogleCalendar() {
               alignItems="center"
             >
               <Typography style={{ fontWeight: "bold", textAlign: "center" }}>
-                {competition.name?.replaceAll("�", "E")} :{" "}
+                {competition.name?.replaceAll("�", "E").replaceAll(" :", "")} :{" "}
               </Typography>
             </Grid>
             <Grid

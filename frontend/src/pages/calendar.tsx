@@ -61,13 +61,7 @@ export default function HomePage() {
   }, [gameEvents, selectedDate]);
 
   return (
-    <Grid
-      container
-      rowSpacing={2}
-      justifyContent="center"
-      alignItems="center"
-      marginTop={1}
-    >
+    <Grid container rowSpacing={2} justifyContent="center" alignItems="center">
       <Grid item xs={12}>
         <DateCalendar
           showDaysOutsideCurrentMonth

@@ -41,7 +41,7 @@ export default function NavBar({ darkMode, switchDarkMode }: Props) {
           </IconButton>
           <NavLink href="/">
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-              Calendrier du Vésinet VB club
+              Calendrier
             </Typography>
           </NavLink>
           <IconButton
