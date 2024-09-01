@@ -4,7 +4,7 @@ import { refreshCompetitionsData } from "./handlers/competition";
 
 functions.setGlobalOptions({
   memory: "512MiB",
-  maxInstances: 2,
+  maxInstances: 1,
   timeoutSeconds: 60,
   region: "europe-west1",
 });
