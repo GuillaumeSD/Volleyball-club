@@ -14,12 +14,19 @@ export const getCompetitionData = async (
     if (child.nodeName !== "table") return false;
 
     const tbody = child.childNodes.find((child) => child.nodeName === "tbody");
-
-    const trs = tbody?.childNodes.filter(
-      (child) => child.nodeName === "tr" && child.attrs.length > 0
+    const tr0 = tbody?.childNodes.find(
+      (child) =>
+        child.nodeName === "tr" &&
+        child.childNodes.find((child) => child.nodeName === "td")
     );
+    const td = tr0?.childNodes.find(
+      (child) => child.nodeName === "td" && child.childNodes.length > 0
+    );
+    if (!td) return false;
 
-    return trs?.length && trs.length > 20;
+    const value = td.childNodes[0].value;
+    if (value === "Journ�e 01") return true;
+    return false;
   });
   if (!table) throw new Error("No table found");
 
