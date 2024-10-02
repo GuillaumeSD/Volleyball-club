@@ -25,7 +25,7 @@ export const getCompetitionData = async (
     if (!td) return false;
 
     const value = td.childNodes[0].value;
-    if (value === "Journ�e 01") return true;
+    if (value === "Journ�e 01" || value === "Phase 01") return true;
     return false;
   });
   if (!table) throw new Error("No table found");
