@@ -6,6 +6,9 @@ export const getParsedDom = async (url: string): Promise<CustomDom> => {
   const config: AxiosRequestConfig = {
     method: "GET",
     url,
+    params: {
+      calend: "COMPLET",
+    },
   };
   const res = await axios(config);
 
