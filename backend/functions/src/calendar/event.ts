@@ -65,5 +65,6 @@ export const handleUpdateEvent =
 
 export const handleDeleteEvent =
   (calendarId: string) => async (event: CalendarEvent) => {
+    if (event.status === "cancelled") return;
     await deleteCalendarEvent(event.id, calendarId);
   };
