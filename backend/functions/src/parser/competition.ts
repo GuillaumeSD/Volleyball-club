@@ -28,7 +28,11 @@ export const getCompetitionData = async (
     if (value === "Journ�e 01" || value === "Phase 01") return true;
     return false;
   });
-  if (!table) throw new Error("No table found");
+
+  if (!table) {
+    logError("No table found", { url });
+    return null;
+  }
 
   const tbody = table.childNodes.find((child) => child.nodeName === "tbody");
   if (!tbody) throw new Error("No tbody found");

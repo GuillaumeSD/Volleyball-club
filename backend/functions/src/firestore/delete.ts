@@ -28,10 +28,11 @@ export const deleteOutdatedGames = async (
 ): Promise<void> => {
   const getAllGames = await firestoreDB.collectionGroup("games").get();
 
-  const documentsToDelete = getAllGames.docs.filter((doc) => {
-    doc.updateTime.toMillis() < Date.now() - 1000 * 60 * 5 &&
-      competitionsIds.includes(doc.ref.parent.parent?.id ?? "");
-  });
+  const documentsToDelete = getAllGames.docs.filter(
+    (doc) =>
+      doc.updateTime.toMillis() < Date.now() - 1000 * 60 * 5 &&
+      competitionsIds.includes(doc.ref.parent.parent?.id ?? "")
+  );
   console.log(`Deleting ${documentsToDelete.length} outdated games`);
 
   await bulkDeleteFirestore(documentsToDelete.map((doc) => doc.ref.path));
