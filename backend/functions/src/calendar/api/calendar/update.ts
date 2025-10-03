@@ -5,10 +5,12 @@ import { isCalendar } from "../../../utils/types";
 import { calendarApi } from "../index";
 
 export const updateCalendar = async (
+  calendarId: string,
   params: CreateCalendarDto
 ): Promise<Calendar> => {
   const { data: calendar } = await calendarApi.calendars
     .update({
+      calendarId,
       requestBody: {
         summary: params.title,
         timeZone: params.timeZone ?? "Europe/Paris",

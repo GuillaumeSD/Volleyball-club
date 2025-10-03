@@ -1,6 +1,8 @@
 import { BulkWriterError } from "@google-cloud/firestore";
 import { firestoreDB } from "./index";
 import { logError } from "../logging";
+import { DocumentToSet } from "../types/firestore";
+import { CompetitionMetadataDto, GameDto } from "../dto/competition";
 
 export const bulkDeleteFirestore = async (documentPaths: string[]) => {
   const bulk = firestoreDB.bulkWriter();
@@ -24,16 +26,26 @@ export const bulkDeleteFirestore = async (documentPaths: string[]) => {
 };
 
 export const deleteOutdatedGames = async (
-  competitionsIds: string[]
+  competitionsIds: string[],
+  documentsSet: DocumentToSet<CompetitionMetadataDto | GameDto>[]
 ): Promise<void> => {
-  const getAllGames = await firestoreDB.collectionGroup("games").get();
+  for (const competitionId of competitionsIds) {
+    const competitionGames = await firestoreDB
+      .collection(`competitions/${competitionId}/games`)
+      .get();
 
-  const documentsToDelete = getAllGames.docs.filter(
-    (doc) =>
-      doc.updateTime.toMillis() < Date.now() - 1000 * 60 * 5 &&
-      competitionsIds.includes(doc.ref.parent.parent?.id ?? "")
-  );
-  console.log(`Deleting ${documentsToDelete.length} outdated games`);
+    const gamesToDelete = competitionGames.docs.filter((doc) => {
+      const gameData = doc.data() as GameDto;
+      return !documentsSet
+        .filter((d) => d.firestorePath.includes(competitionId))
+        .some((d) => d.data.ffvbId === gameData.ffvbId);
+    });
 
-  await bulkDeleteFirestore(documentsToDelete.map((doc) => doc.ref.path));
+    if (gamesToDelete.length) {
+      console.log(
+        `Should delete ${gamesToDelete.length} outdated games in competition ${competitionId}`
+      );
+      // await bulkDeleteFirestore(gamesToDelete.map((doc) => doc.ref.path));
+    }
+  }
 };

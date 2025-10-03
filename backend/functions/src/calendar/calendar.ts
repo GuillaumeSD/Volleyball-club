@@ -41,7 +41,7 @@ const createOrUpdateCalendar = async (
     calendar.timeZone !== timeZone ||
     calendar.summary !== title
   ) {
-    return await updateCalendar({
+    return await updateCalendar(calendar.id, {
       title,
       timeZone,
       description,

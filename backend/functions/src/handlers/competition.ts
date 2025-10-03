@@ -37,7 +37,7 @@ export const refreshCompetitionsData = async (
     getCompetitionId(metadata)
   );
 
-  await deleteOutdatedGames(competitionsIds);
+  await deleteOutdatedGames(competitionsIds, documentsToSet);
 
   return competitionsIds;
 };
