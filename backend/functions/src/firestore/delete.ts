@@ -41,11 +41,18 @@ export const deleteOutdatedGames = async (
         .some((d) => d.data.ffvbId === gameData.ffvbId);
     });
 
-    if (gamesToDelete.length) {
-      console.log(
-        `Should delete ${gamesToDelete.length} outdated games in competition ${competitionId}`
+    if (gamesToDelete.length === 0) continue;
+
+    if (gamesToDelete.length > 3) {
+      console.warn(
+        `Too many (${gamesToDelete.length}) games to delete in competition ${competitionId}, skipping delete operation`
       );
-      // await bulkDeleteFirestore(gamesToDelete.map((doc) => doc.ref.path));
+      continue;
     }
+
+    console.log(
+      `Delete ${gamesToDelete.length} outdated games in competition ${competitionId}`
+    );
+    await bulkDeleteFirestore(gamesToDelete.map((doc) => doc.ref.path));
   }
 };
